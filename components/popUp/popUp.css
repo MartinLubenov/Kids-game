@@ -1,0 +1,108 @@
+/* Основен контейнер за попъпа */
+.popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0 0 0 / 50%);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: popupBounce 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes popupBounce {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    70% {
+        opacity: 0.9;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Съдържанието на попъпа */
+.popup-content {
+    background-color: #7399ff; /* Bright gold background */
+    padding: 30px;
+    border-radius: 25px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    border: 5px solid #00f6ff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative elements */
+.popup-content::before {
+    content: '🌟';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    font-size: 3rem;
+    opacity: 0.7;
+    transform: rotate(-15deg);
+}
+
+.popup-content::after {
+    content: '🎉';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-size: 3rem;
+    opacity: 0.7;
+    transform: rotate(15deg);
+}
+
+/* Съобщението в попъпа */
+#popup-message {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Бутона за затваряне */
+#popup-close {
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    background-color: #bd4adb;
+    border: 3px solid white;
+    color: white;
+    cursor: pointer;
+    border-radius: 20px;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+#popup-close:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Показване на попъпа */
+.popup.show {
+    display: flex;
+    /* Използваме flexbox за вертикално и хоризонтално центриране */
+    justify-content: center;
+    /* Центриране по хоризонтала */
+    align-items: center;
+    /* Центриране по вертикала */
+}

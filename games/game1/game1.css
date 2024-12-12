@@ -1,0 +1,287 @@
+/* game1/game.css */
+
+/* Премахваме вертикалния скрол на цялата страница */
+html,
+body {
+    overflow: hidden;
+    /* Скриваме вертикалния скрол */
+    margin: 0;
+    /* Премахваме външния margin, който може да причинява скрол */
+    padding: 0;
+    /* Премахваме padding, който може да разширява съдържанието */
+    height: 100%;
+    /* Уверяваме се, че body заема цялата височина */
+    width: 100%;
+    /* Уверяваме се, че body заема цялата ширина */
+}
+
+/* Основен стил за body */
+body {
+    display: flex;
+    /* Използваме flexbox */
+    justify-content: center;
+    /* Центрираме съдържанието по хоризонтала */
+    align-items: center;
+    /* Центрираме съдържанието по вертикала */
+    min-height: 100vh;
+    /* Пълна височина на екрана */
+    background-color: #f0f8ff;
+    /* Можете да добавите фон, ако искате */
+    font-family: 'Comic Sans MS', cursive;
+}
+
+/* Основен стил за екрана на играта */
+.game-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 50%, #45B7D1 100%);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    text-align: center;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+    color: #007bff; /* Updated to target object color */
+}
+
+/* Анимация за фона */
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Добавяме декоративни елементи за по-детски вид */
+.game-screen::before,
+.game-screen::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
+
+.game-screen::before {
+    width: 100px;
+    height: 100px;
+    top: 10%;
+    left: 10%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.game-screen::after {
+    width: 150px;
+    height: 150px;
+    bottom: 10%;
+    right: 10%;
+    animation: float 5s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-30px);
+    }
+}
+
+/* Заглавие на играта */
+.game-screen h1 {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+    background-color: #FF5722;
+    padding: 15px 30px;
+    border-radius: 50px;
+    letter-spacing: 2px;
+    transform: skew(-5deg);
+    border: 4px solid white;
+    margin-bottom: 40px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Подобряване на четливостта на допълнителни елементи */
+.game-screen p,
+.game-screen span,
+.game-screen div {
+    color: #007bff;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Game screen container */
+.game-screen {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.game1-loaded .game-screen {
+    opacity: 1;
+}
+
+.game-screen.loaded {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Стил за съдържанието на поп-ъп */
+/* .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+} */
+
+/* Стил за съобщението в pop-up */
+/* #popup-message {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 20px;
+} */
+
+/* Стил за бутона за затваряне на pop-up */
+/* #popup-close {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+} */
+
+/* #popup-close:hover {
+    background-color: #0056b3;
+} */
+
+/* Стилове за играта */
+.game-screen {
+    background-color: #f0f8ff;
+    /* Светлосин фон */
+    padding: 2%;
+    /* Премахваме голямото padding */
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+    /* max-width: 100%; */
+    /* Ограничаваме ширината на екрана */
+    box-sizing: border-box;
+    /* Това ще включва padding и border в размера */
+    height: 100%;
+    /* max-height: 90%; */
+    /* Ограничаваме височината, за да не излиза извън екрана */
+}
+
+/* Стилове за подсказката и оставащите опити */
+.hint {
+    margin: 5% 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff5733;
+    font-family: 'Comic Sans MS', sans-serif;
+    /* За детски вид */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#attempts-text {
+    font-size: 1.8rem;
+    color: #ff5733;
+    font-family: 'Comic Sans MS', sans-serif;
+    /* За детски вид */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Стилове за обектите (картинки) */
+.objects-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 5% 0;
+}
+
+.object {
+    background-color: #f9f9f9;
+    padding: 1%;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 2%;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.object img {
+    width: 80px;
+    /* Размер на изображенията */
+    height: 80px;
+    /* Размер на изображенията */
+    object-fit: contain;
+}
+
+.object:hover {
+    background-color: #cce5ff;
+}
+
+.found {
+    background-color: #28a745;
+    /* Зелен цвят за намерен обект */
+    color: white;
+}
+
+.not-found {
+    background-color: #dc3545;
+    /* Червен цвят за неправилно избран обект */
+    color: white;
+}
+
+/* Стилове за бутона "Назад" */
+button {
+    background-color: #007bff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Стилове за подсказката за търсене на обект */
+#target-object {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+    /* Зелен за целта */
+}
+
+/* За "изчезващия" екран */
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}

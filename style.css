@@ -1,0 +1,199 @@
+/* Основни стилове за контейнера и игралните екрани */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    /* overflow-y: hidden; */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    background-image: url('home.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* background-attachment: fixed; */
+    background-color: #2ec6d7;
+}
+
+.container img {
+    width: 10vh;
+    position: absolute;
+    top: 20vh;
+}
+
+.container.loaded {
+    opacity: 1;
+}
+
+/* .game-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    width: 80%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+.game-screen h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.game-screen p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+} */
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Стилове за началния екран */
+.building {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.floor {
+    padding: 15px;
+    background-color: #87cefa;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.floor:hover {
+    background-color: #00bfff;
+    transform: scale(1.1);
+    /* Увеличаване при hover */
+}
+
+/* Стилове за етажите */
+.floor:nth-child(odd) {
+    background-color: #add8e6;
+}
+
+.floor:nth-child(even) {
+    background-color: #afeeee;
+}
+
+/* Добавяне на анимации за екрана */
+.container,
+.game-screen {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.container.loaded,
+.game-screen.loaded {
+    opacity: 1;
+}
+
+/* Плавен преход при сменяне на игри */
+.game-screen {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Стилове за навигацията */
+button {
+    padding: 10px 20px;
+    background-color: #ff6347;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff4500;
+}
+
+/* Респонсивен дизайн */
+@media screen and (max-width: 768px) {
+    /* .container {
+        padding: 10px;
+    } */
+
+    .building {
+        width: 80%;
+    }
+
+    .floor {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    .game-screen h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .game-screen p {
+        font-size: 1rem;
+    }
+}
+
+/* @media only screen and (orientation: landscape) {
+    body {
+        display: none !important;
+    }
+
+    .landscape-message {
+        display: block;
+        text-align: center;
+        font-size: 2rem;
+        padding: 20px;
+        background-color: #f00;
+        color: #fff;
+    }
+} */
