@@ -130,7 +130,7 @@ class App {
                     document.querySelector('.container').classList.add('loaded');
                 }, 100);
                 this.setupFloorListeners();
-                // soundManager.play('commonSounds', 'homeBackgroundMusic');
+                soundManager.play('commonSounds', 'homeBackgroundMusic');
                 // soundManager.setVolume('commonSounds', 0.2)
                 return;
             }
@@ -138,6 +138,7 @@ class App {
             this.loadingScreen.show(`Зареждане на ${screenId}...`);
 
             if (games[screenId]) {
+                soundManager.stop('commonSounds', 'homeBackgroundMusic');
                 const { script, style } = games[screenId];
                 console.log('Loading game CSS:', style);
 

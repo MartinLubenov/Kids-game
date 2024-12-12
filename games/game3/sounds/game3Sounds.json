@@ -1,0 +1,15 @@
+{
+  "src": [
+    "mp3\\game3Sounds.mp3"
+  ],
+  "sprite": {
+    "closeCard": [
+      0,
+      360
+    ],
+    "openCard": [
+      2000,
+      240.00000000000023
+    ]
+  }
+}

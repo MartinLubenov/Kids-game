@@ -2,6 +2,7 @@ import { Game } from '../../components/Game/Game.js';
 import { PopUpStates } from '../../components/popUp/popUp.js';
 // import { shuffleArray, getCurrentGameCssPath } from '../../utils/helpers.js';
 import { handleError, GameError, ErrorTypes } from '../../utils/errorHandler.js';
+import soundManager from '../../utils/soundManager.js';
 
 export class LightSequenceGame extends Game {
     constructor() {
@@ -22,13 +23,25 @@ export class LightSequenceGame extends Game {
             await this.loadGameAssets();
             await this.setupGameScreen();
             await this.setupEventListeners();
-            
+            soundManager.loadSound('game4Sounds', 'games/game4/sounds/game4Sounds.mp3', {
+                sprite: {
+                    "circlePop": [
+                        0,
+                        548.5714285714286
+                    ],
+                    "circleSequence": [
+                        2000,
+                        359.9999999999999
+                    ]
+                }
+            });
+
             // Hide game screen initially
             const gameScreenElement = document.querySelector('.game-screen');
             // if (gameScreenElement) {
             //     gameScreenElement.style.display = 'none';
             // }
-            
+
             // Show initial popup and start game
             await this.popUp.showPopup(
                 'Научи се да повтаряш светлинната последователност!',
@@ -38,7 +51,7 @@ export class LightSequenceGame extends Game {
                 if (gameScreenElement) {
                     gameScreenElement.style.display = 'flex';
                 }
-                
+
                 // Add a small delay before starting the first sequence
                 setTimeout(() => {
                     this.playSequence();
@@ -85,17 +98,17 @@ export class LightSequenceGame extends Game {
                 <h1>Последователност на светлини</h1>
                 <div class="buttons-container">
                     ${this.colors
-                        .map(
-                            (color, index) =>
-                                `<button class="color-button" data-index="${index}" style="background-color: ${color};"></button>`
-                        )
-                        .join('')}
+                .map(
+                    (color, index) =>
+                        `<button class="color-button" data-index="${index}" style="background-color: ${color};"></button>`
+                )
+                .join('')}
                 </div>
                 <button id="back">Назад</button>
             </div>
         `;
         document.body.innerHTML = gameScreen;
-        
+
         await this.loadingScreen.updateMessage('Подготовка на игралното поле...');
         await this.loadingScreen.updateProgress(2, 3);
 
@@ -147,37 +160,40 @@ export class LightSequenceGame extends Game {
      */
     async handleButtonClick(index) {
         const clickedButton = this.buttons[index];
-        
+
         // Remove active class from all buttons first
         this.buttons.forEach(btn => btn.classList.remove('active'));
-        
+
+        soundManager.play('game4Sounds', 'circlePop');
         // Add active class to clicked button
         clickedButton.classList.add('active');
-        
+
         // Remove active class after a short delay
         setTimeout(() => {
             clickedButton.classList.remove('active');
-        }, 200);
+        }, 50);
 
         this.playerSequence.push(index);
 
         // Compare player sequence with the game sequence
         if (this.playerSequence[this.playerSequence.length - 1] !== this.sequence[this.playerSequence.length - 1]) {
+            soundManager.play('commonSounds', 'error');
             await this.popUp.showPopup('Грешка! Опитайте отново от началото.', PopUpStates.GAME_LOST);
             this.resetGame();
             // Add a small delay before starting the next sequence
             setTimeout(() => {
                 this.playSequence();
-            }, 500);
+            }, 1000);
             return;
         }
 
         // Check if player completed the current sequence
         if (this.playerSequence.length === this.sequence.length) {
+            soundManager.play('commonSounds', 'success');
             this.level++;
             this.updateLevelDisplay();
             await this.popUp.showPopup(`Поздравления! Преминахте ниво ${this.level}.`, PopUpStates.INITIAL_GAME);
-            
+
             // Add a small delay before starting the next sequence
             setTimeout(() => {
                 this.playSequence();
@@ -192,7 +208,7 @@ export class LightSequenceGame extends Game {
     async playSequence() {
         // Clear previous sequence input
         this.playerSequence = [];
-        
+
         // Add a new random button to the sequence
         this.sequence.push(Math.floor(Math.random() * this.buttons.length));
 
@@ -202,11 +218,11 @@ export class LightSequenceGame extends Game {
         // Play the entire sequence with a clear pause between buttons
         for (const index of this.sequence) {
             const button = this.buttons[index];
-            
+            soundManager.play('game4Sounds', 'circlePop');
             // Activate button
             button.classList.add('active');
-            await new Promise(resolve => setTimeout(resolve, 500)); // Light up time
-            
+            await new Promise(resolve => setTimeout(resolve, 300)); // Light up time
+
             // Deactivate button
             button.classList.remove('active');
             await new Promise(resolve => setTimeout(resolve, 300)); // Pause between buttons
@@ -243,7 +259,7 @@ export class LightSequenceGame extends Game {
 }
 
 // Export the game start function
-export const startGame =() => {
+export const startGame = () => {
     const game = new LightSequenceGame();
     return game.startGame();
 };

@@ -8,6 +8,7 @@ import { Game } from '../../components/Game/Game.js';
 import { PopUpStates } from '../../components/popUp/popUp.js';
 import { shuffleArray, getGameImages } from '../../utils/helpers.js';
 import { handleError, GameError, ErrorTypes } from '../../utils/errorHandler.js';
+import soundManager from '../../utils/soundManager.js';
 
 export class ObjectFindingGame extends Game {
     constructor() {
@@ -176,7 +177,7 @@ export class ObjectFindingGame extends Game {
             object.classList.add('found');
             this.popUpState = PopUpStates.GAME_WON;
             clearInterval(this.timerInterval);
-            
+            soundManager.play('commonSounds', 'gameCompleted');
             await this.popUp.showPopup(
                 'Браво! Намери правилния обект! Искаш ли да играеш отново?',
                 PopUpStates.GAME_WON
@@ -192,7 +193,7 @@ export class ObjectFindingGame extends Game {
             if (this.attempts === 0) {
                 clearInterval(this.timerInterval);
                 this.popUpState = PopUpStates.GAME_LOST;
-                
+                soundManager.play('commonSounds', 'error');                
                 await this.popUp.showPopup(
                     'Опа! Свършиха ти опитите. Искаш ли да опиташ отново?',
                     PopUpStates.GAME_LOST
@@ -201,6 +202,7 @@ export class ObjectFindingGame extends Game {
                 // Wait for popup to close and then retry the game
                 await this.retryGame();
             } else {
+                soundManager.play('commonSounds', 'error');
                 // Show mistake popup
                 await this.popUp.showPopup(
                     'Опа! Това не е правилният обект. Опитай пак!',
@@ -262,7 +264,7 @@ export class ObjectFindingGame extends Game {
             if (this.timeLeft === 0) {
                 clearInterval(this.timerInterval);
                 this.popUpState = PopUpStates.TIME_EXPIRED;
-                
+                soundManager.play('commonSounds', 'error');
                 await this.popUp.showPopup(
                     'Времето изтече! Искаш ли да опиташ отново?',
                     PopUpStates.TIME_EXPIRED

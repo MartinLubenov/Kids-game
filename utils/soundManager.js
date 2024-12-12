@@ -1,4 +1,4 @@
-import 'https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js';
+// import 'https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js';
 
 const Howl = window.Howl;
 

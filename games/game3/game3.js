@@ -1,6 +1,7 @@
 import { Game } from '../../components/Game/Game.js';
 import { PopUpStates } from '../../components/popUp/popUp.js';
 import { handleError, GameError, ErrorTypes } from '../../utils/errorHandler.js';
+import soundManager from '../../utils/soundManager.js';
 // import { getCurrentGameCssPath } from '../../utils/helpers.js';
 
 const CARDS = [
@@ -27,7 +28,19 @@ export class MemoryGame extends Game {
             await this.loadGameAssets();
             await this.setupGameScreen();
             await this.setupEventListeners();
-            
+            soundManager.loadSound('game3Sounds', 'games/game3/sounds/game3Sounds.mp3', {
+                sprite: {
+                    "closeCard": [
+                        0,
+                        360
+                    ],
+                    "openCard": [
+                        2000,
+                        240.00000000000023
+                    ]
+                }
+            });
+
             // Show initial popup
             await this.popUp.showPopup(
                 'Добре дошли в играта "Намери двойките"! Намерете всички съвпадащи двойки карти.',
@@ -70,7 +83,7 @@ export class MemoryGame extends Game {
      */
     async setupGameScreen() {
         await this.loadingScreen.updateMessage('Подготовка на игралното поле...');
-        
+
         // Create game screen HTML
         const gameScreen = `
             <div class="game-screen">
@@ -108,7 +121,7 @@ export class MemoryGame extends Game {
     setupEventListeners() {
         // Select all card elements
         this.cards = Array.from(document.querySelectorAll('.card'));
-        
+
         // Add click listeners to cards
         this.cards.forEach(card => {
             card.addEventListener('click', () => this.handleCardClick(card));
@@ -126,7 +139,7 @@ export class MemoryGame extends Game {
     shuffleCards() {
         const cardValues = CARDS.sort(() => Math.random() - 0.5);
         const cardElements = document.querySelectorAll('.card-back');
-        
+
         cardElements.forEach((cardBack, index) => {
             cardBack.textContent = cardValues[index];
             cardBack.parentElement.parentElement.dataset.emoji = cardValues[index];
@@ -146,6 +159,7 @@ export class MemoryGame extends Game {
 
         // Flip the card
         card.classList.add('flipped');
+        soundManager.play('game3Sounds', 'openCard');
         this.flippedCards.push(card);
 
         if (this.flippedCards.length === 2) {
@@ -169,6 +183,7 @@ export class MemoryGame extends Game {
         const [card1, card2] = this.flippedCards;
 
         if (card1.dataset.emoji === card2.dataset.emoji) {
+            soundManager.play('commonSounds', 'success');
             // Match found
             this.matchedPairs++;
 
@@ -189,6 +204,7 @@ export class MemoryGame extends Game {
                 this.handleGameComplete();
             }
         } else {
+            soundManager.play('commonSounds', 'error');
             // No match
             // Add mismatch class to both cards
             card1.classList.add('card-mismatch');
@@ -196,6 +212,7 @@ export class MemoryGame extends Game {
 
             // Flip cards back after a delay
             setTimeout(() => {
+                soundManager.play('game3Sounds', 'closeCard');
                 card1.classList.remove('flipped', 'card-mismatch');
                 card2.classList.remove('flipped', 'card-mismatch');
                 this.flippedCards = [];
@@ -220,6 +237,7 @@ export class MemoryGame extends Game {
      * @private
      */
     async handleGameComplete() {
+        soundManager.play('commonSounds', 'gameCompleted');
         await this.popUp.showPopup(
             `Поздравления! Завършихте играта с ${this.moves} хода!`,
             PopUpStates.GAME_WON
