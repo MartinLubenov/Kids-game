@@ -87,7 +87,9 @@ button:hover {
 .building {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    width: 40%;
+    gap: 15px;
+    margin-bottom: 7%;
 }
 
 .floor {
@@ -105,10 +107,10 @@ button:hover {
     /* Увеличаване при hover */
 }
 
-/* Стилове за етажите */
+/* Стилове за етажите
 .floor:nth-child(odd) {
     background-color: #add8e6;
-}
+} */
 
 .floor:nth-child(even) {
     background-color: #afeeee;
@@ -160,14 +162,6 @@ button:hover {
 
 /* Респонсивен дизайн */
 @media screen and (max-width: 768px) {
-    /* .container {
-        padding: 10px;
-    } */
-
-    .building {
-        width: 80%;
-    }
-
     .floor {
         font-size: 1rem;
         padding: 12px;

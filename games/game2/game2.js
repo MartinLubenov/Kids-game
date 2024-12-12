@@ -2,6 +2,7 @@ import { Game } from '../../components/Game/Game.js';
 import { PopUpStates } from '../../components/popUp/popUp.js';
 import { shuffleArray, getCurrentGameCssPath } from '../../utils/helpers.js';
 import { handleError, GameError, ErrorTypes } from '../../utils/errorHandler.js';
+import soundManager from '../../utils/soundManager.js';
 
 export class PuzzleGame extends Game {
     constructor() {
@@ -141,10 +142,15 @@ export class PuzzleGame extends Game {
         const puzzlePieces = document.querySelectorAll('.puzzle-piece');
         const backButton = document.getElementById('back');
 
+        // Use method references to avoid creating new function instances
+        this.boundHandleTouchStart = this.handleTouchStart.bind(this);
+        this.boundHandleTouchMove = this.handleTouchMove.bind(this);
+        this.boundHandleTouchEnd = this.handleTouchEnd.bind(this);
+
         puzzlePieces.forEach(piece => {
-            piece.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
-            piece.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
-            piece.addEventListener('touchend', this.handleTouchEnd.bind(this));
+            piece.addEventListener('touchstart', this.boundHandleTouchStart, { passive: false });
+            piece.addEventListener('touchmove', this.boundHandleTouchMove, { passive: false });
+            piece.addEventListener('touchend', this.boundHandleTouchEnd);
         });
 
         backButton.addEventListener('click', this.handleBackToHome.bind(this));
@@ -167,18 +173,14 @@ export class PuzzleGame extends Game {
         this.startX = rect.left;
         this.startY = rect.top;
 
-        // Create a clone for dragging
-        const clone = this.activePiece.cloneNode(true);
-        clone.style.position = 'fixed';
-        clone.style.left = rect.left + 'px';
-        clone.style.top = rect.top + 'px';
-        clone.style.zIndex = '1000';
-        clone.style.opacity = '0.8';
-        clone.id = 'dragging-piece';
-        document.body.appendChild(clone);
-
-        // Hide original piece
-        this.activePiece.style.visibility = 'hidden';
+        // Use transform for better performance
+        this.activePiece.style.position = 'fixed';
+        this.activePiece.style.left = rect.left + 'px';
+        this.activePiece.style.top = rect.top + 'px';
+        this.activePiece.style.zIndex = '1000';
+        this.activePiece.style.opacity = '0.8';
+        this.activePiece.style.transition = 'none';
+        this.activePiece.style.pointerEvents = 'none';
     }
 
     /**
@@ -188,12 +190,14 @@ export class PuzzleGame extends Game {
      */
     handleTouchMove(event) {
         event.preventDefault();
-        const dragPiece = document.getElementById('dragging-piece');
-        if (!dragPiece) return;
+        if (!this.activePiece) return;
 
         const touch = event.touches[0];
-        dragPiece.style.left = (touch.clientX - this.offsetX) + 'px';
-        dragPiece.style.top = (touch.clientY - this.offsetY) + 'px';
+        const newX = touch.clientX - this.offsetX;
+        const newY = touch.clientY - this.offsetY;
+
+        // Use transform for smoother movement
+        this.activePiece.style.transform = `translate(${newX - this.startX}px, ${newY - this.startY}px)`;
 
         // Highlight potential drop target
         const dropTarget = document.elementFromPoint(
@@ -220,15 +224,22 @@ export class PuzzleGame extends Game {
     async handleTouchEnd(event) {
         if (!this.activePiece) return;
 
-        const dragPiece = document.getElementById('dragging-piece');
-        if (!dragPiece) return;
-
         const touch = event.changedTouches[0];
         const dropTarget = document.elementFromPoint(
             touch.clientX - window.scrollX,
             touch.clientY - window.scrollY
         );
 
+        // Reset piece styles
+        this.activePiece.style.position = '';
+        this.activePiece.style.left = '';
+        this.activePiece.style.top = '';
+        this.activePiece.style.zIndex = '';
+        this.activePiece.style.opacity = '';
+        this.activePiece.style.transform = '';
+        this.activePiece.style.transition = '';
+        this.activePiece.style.pointerEvents = '';
+        
         // Remove hover effects
         document.querySelectorAll('.empty-slot.hover').forEach(slot => {
             slot.classList.remove('hover');
@@ -242,21 +253,15 @@ export class PuzzleGame extends Game {
                 // Correct placement
                 dropTarget.appendChild(this.activePiece);
                 dropTarget.classList.remove('empty-slot');
-                this.activePiece.style.visibility = 'visible';
-                this.activePiece.style.position = 'static';
+                soundManager.play('commonSounds', 'success');
                 this.checkPuzzleCompletion();
             } else {
                 // Wrong placement
-                this.activePiece.style.visibility = 'visible';
+                soundManager.play('commonSounds', 'error');
                 await this.popUp.showPopup('Това парченце не е за там!', PopUpStates.MISTAKE_MADE);
             }
-        } else {
-            // No valid drop target
-            this.activePiece.style.visibility = 'visible';
         }
 
-        // Clean up
-        dragPiece.remove();
         this.activePiece = null;
     }
 
@@ -268,6 +273,7 @@ export class PuzzleGame extends Game {
         const emptySlots = document.querySelectorAll('.empty-slot');
         if (emptySlots.length === 0) {
             setTimeout(async () => {
+                soundManager.play('commonSounds', 'gameCompleted');
                 await this.popUp.showPopup('Браво! Успешно подреди пъзела!', PopUpStates.GAME_WON);
                 // Restart the game
                 await this.retryGame();
@@ -291,12 +297,12 @@ export class PuzzleGame extends Game {
      * @override
      */
     async destroy() {
-        // Remove event listeners
+        // Remove event listeners using method references
         const puzzlePieces = document.querySelectorAll('.puzzle-piece');
         puzzlePieces.forEach(piece => {
-            piece.removeEventListener('touchstart', this.handleTouchStart);
-            piece.removeEventListener('touchmove', this.handleTouchMove);
-            piece.removeEventListener('touchend', this.handleTouchEnd);
+            piece.removeEventListener('touchstart', this.boundHandleTouchStart);
+            piece.removeEventListener('touchmove', this.boundHandleTouchMove);
+            piece.removeEventListener('touchend', this.boundHandleTouchEnd);
         });
 
         // Call parent destroy method

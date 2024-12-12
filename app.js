@@ -9,18 +9,45 @@ class App {
         this.screens = {};
         this.loadedCSS = new Set();
         this.loadingScreen = new LoadingScreen();
-        
+
         // Bind methods to maintain correct 'this' context
         this.checkOrientation = this.checkOrientation.bind(this);
         this.init = this.init.bind(this);
-        
+
         // Set up event listeners
         window.addEventListener('resize', this.checkOrientation);
         document.addEventListener('DOMContentLoaded', this.init);
+        soundManager.loadSound('commonSounds', 'sounds/commonSounds.mp3', {
+            sprite: {
+                "backToMainScreen": [
+                    0,
+                    1032.0181405895692,
+                ],
+                "error": [
+                    3000,
+                    1619.5918367346937
+                ],
+                "gameCompleted": [
+                    6000,
+                    3912.01814058957
+                ],
+                "homeBackgroundMusic": [
+                    11000,
+                    87405.71428571428
+                ],
+                "openGame": [
+                    100000,
+                    1008.0045351473927
+                ],
+                "success": [
+                    103000,
+                    3359.9999999999995
+                ]
+            }
+        });
     }
 
     async ensureCSS(cssPath) {
-        debugger
         if (this.loadedCSS.has(cssPath)) {
             console.log(`CSS already loaded: ${cssPath}`);
             return;
@@ -82,7 +109,7 @@ class App {
 
     async loadScreen(screenId) {
         console.log('Loading screen:', screenId);
-        
+
         try {
             // Create a placeholder div to prevent content flash
             const placeholder = document.createElement('div');
@@ -103,15 +130,17 @@ class App {
                     document.querySelector('.container').classList.add('loaded');
                 }, 100);
                 this.setupFloorListeners();
+                // soundManager.play('commonSounds', 'homeBackgroundMusic');
+                // soundManager.setVolume('commonSounds', 0.2)
                 return;
             }
 
             this.loadingScreen.show(`Зареждане на ${screenId}...`);
-            
+
             if (games[screenId]) {
                 const { script, style } = games[screenId];
                 console.log('Loading game CSS:', style);
-                
+
                 // Load CSS first and ensure it's applied
                 this.loadingScreen.updateMessage('Зареждане на стилове...');
                 await this.ensureCSS(style);
@@ -123,13 +152,15 @@ class App {
                 try {
                     const gameModule = await import(script);
                     this.loadingScreen.updateProgress(2, 2);
-                    
+
                     // Clear the body only after CSS is loaded
                     document.body.innerHTML = '';
-                    
+                    soundManager.play('commonSounds', 'openGame');
+                    soundManager.setVolume('commonSounds', 0.2)
+
                     // Start the game
                     await gameModule.startGame();
-                    
+
                     // Add loaded class to game screen
                     const gameContainer = document.querySelector('.game-screen');
                     if (gameContainer) {
@@ -183,14 +214,14 @@ class App {
     async init() {
         try {
             // Initialize background music
-            soundManager.loadSound('commonSounds', 'sounds/commonSounds.mp3', {
-                sprite: {
-                    homeBackgroundMusic: [10000, 87405.71428571428]
-                },
-                loop: true
-            });
-            soundManager.play('commonSounds', 'homeBackgroundMusic');
-            soundManager.setVolume('commonSounds', 0.3)
+            // soundManager.loadSound('commonSounds', 'sounds/commonSounds.mp3', {
+            //     sprite: {
+            //         homeBackgroundMusic: [10000, 87405.71428571428]
+            //     },
+            //     loop: true
+            // });
+            // soundManager.play('commonSounds', 'homeBackgroundMusic');
+            // soundManager.setVolume('commonSounds', 0.3)
 
             // Show loading screen
             await this.loadingScreen.show();

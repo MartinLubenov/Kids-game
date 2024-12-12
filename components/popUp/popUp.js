@@ -1,6 +1,7 @@
 import { unloadCSS } from '../../utils/helpers.js';
 import { handleError, GameError, ErrorTypes } from '../../utils/errorHandler.js';
 import { ensureCSS } from '../../app.js';
+import soundManager from '../../utils/soundManager.js';
 
 // Singleton instance
 let instance = null;
@@ -11,12 +12,26 @@ export class PopUp {
             return instance;
         }
         instance = this;
-        
+
         this.popup = null;
         this.popupMessage = null;
         this.popupCloseButton = null;
         this.cssLoaded = false;
         this.cssLink = null;
+
+        // Load common sounds
+        soundManager.loadSound('popUpSounds', 'sounds/popUpSounds.mp3', {
+            sprite: {
+                "closePopUp": [
+                    0,
+                    168.0045351473923
+                ],
+                "openPopUp": [
+                    1999.9999999999998,
+                    288.00453514739235
+                ]
+            }
+        });
     }
 
     /**
@@ -49,6 +64,9 @@ export class PopUp {
      */
     async showPopup(message, state) {
         try {
+            // Play open popup sound
+            soundManager.play('popUpSounds', 'openPopUp');
+
             await this.loadPopUpCSS();
 
             if (this.popup) {
@@ -77,10 +95,15 @@ export class PopUp {
             document.body.appendChild(this.popup);
 
             return new Promise((resolve) => {
-                this.popupCloseButton.addEventListener('click', () => {
+                const closeHandler = () => {
+                    // Play close popup sound
+                    soundManager.play('popUpSounds', 'closePopUp');
+
                     this.closePopup();
                     resolve();
-                });
+                };
+
+                this.popupCloseButton.addEventListener('click', closeHandler);
             });
         } catch (error) {
             handleError(

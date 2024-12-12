@@ -192,7 +192,7 @@ export class Game {
         try {
             // Destroy current game
             await this.destroy();
-            
+            soundManager.play('commonSounds', 'backToMainScreen');
             // Set location hash and load home screen
             window.location.hash = '#home';
             const { loadScreen } = await import('../../app.js');
