@@ -1,4 +1,27 @@
 /**
+ * @fileOverview Advanced Error Handling Module for Kids Educational Game
+ * 
+ * This module provides a robust error management system with:
+ * - Standardized error types
+ * - Custom error class
+ * - Global error handling
+ * - User-friendly error notifications
+ * 
+ * Key Features:
+ * - Categorized error types
+ * - Detailed error logging
+ * - Graceful error recovery
+ * - Internationalized error messages
+ * 
+ * @module ErrorHandler
+ * @requires none
+ * 
+ * @author Martin Lubenov
+ * @version 1.0.0
+ * @license MIT
+ */
+
+/**
  * Error types enum for consistent error categorization
  */
 export const ErrorTypes = {

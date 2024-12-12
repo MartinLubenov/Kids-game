@@ -1,4 +1,41 @@
 /**
+ * @fileOverview Object Finding Game Module for Kids Educational Game
+ * 
+ * This module implements an interactive educational game where children
+ * search for specific objects within a grid of images.
+ * 
+ * Game Mechanics:
+ * - Dynamic image grid generation
+ * - Timed gameplay
+ * - Limited attempts
+ * - Interactive object selection
+ * - Sound and visual feedback
+ * 
+ * Learning Objectives:
+ * - Visual recognition
+ * - Attention to detail
+ * - Time management
+ * - Problem-solving skills
+ * 
+ * Key Features:
+ * - Randomized object placement
+ * - Progressive difficulty
+ * - Error handling
+ * - Responsive design
+ * 
+ * @module ObjectFindingGame
+ * @requires ../../components/Game/Game.js
+ * @requires ../../components/popUp/popUp.js
+ * @requires ../../utils/helpers.js
+ * @requires ../../utils/errorHandler.js
+ * @requires ../../utils/soundManager.js
+ * 
+ * @author Martin Lubenov
+ * @version 1.0.0
+ * @license MIT
+ */
+
+/**
  * Game 1 - Object Finding Game
  * A simple educational game where children need to find specific objects in a grid of images.
  * The game features a timer, multiple attempts, and dynamic image shuffling.

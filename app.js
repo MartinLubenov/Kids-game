@@ -1,11 +1,62 @@
+/**
+ * @fileOverview Core Application Management Module for Kids Educational Game
+ * 
+ * This module serves as the central controller for the Kids Educational Game Web Application.
+ * It manages screen transitions, dynamic resource loading, game initialization, and 
+ * provides a seamless, interactive experience across different game modules.
+ * 
+ * Key Responsibilities:
+ * - Dynamic screen and game loading
+ * - CSS and script resource management
+ * - Sound and music control
+ * - Error handling and fallback mechanisms
+ * 
+ * Design Principles:
+ * - Modular architecture
+ * - Lazy loading of game resources
+ * - Centralized state management
+ * - Responsive and accessible design
+ * 
+ * @module App
+ * @requires ./gameModules/generatedGames.js
+ * @requires ./components/loadingScreen/loadingScreen.js
+ * @requires ./utils/errorHandler.js
+ * @requires ./utils/soundManager.js
+ * 
+ * @author Martin Lubenov
+ * @version 1.0.0
+ * @license MIT
+ */
+
 import { games } from './gameModules/generatedGames.js';
 import { LoadingScreen } from './components/loadingScreen/loadingScreen.js';
 import { handleError, GameError, ErrorTypes } from './utils/errorHandler.js';
 import soundManager from './utils/soundManager.js';
 // import { unloadCSS } from './utils/helpers.js';
 
+/**
+ * Manages the entire application lifecycle, screen transitions, and game initialization.
+ * 
+ * @class App
+ * @classdesc Central controller for the Kids Educational Game application
+ * 
+ * @property {Object} screens - Stores rendered screen HTML content
+ * @property {Set} loadedCSS - Tracks loaded CSS files to prevent duplicate loading
+ * @property {LoadingScreen} loadingScreen - Manages loading screen states and animations
+ * 
+ * @example
+ * // Application is automatically initialized on page load
+ * const app = new App();
+ * // Users navigate between screens by clicking floor buttons
+ */
 class App {
+    /**
+     * Initializes the application state, sets up event listeners, and loads common sound sprites.
+     * 
+     * @constructor
+     */
     constructor() {
+        // Initialize application state
         this.screens = {};
         this.loadedCSS = new Set();
         this.loadingScreen = new LoadingScreen();
@@ -17,6 +68,8 @@ class App {
         // Set up event listeners
         window.addEventListener('resize', this.checkOrientation);
         document.addEventListener('DOMContentLoaded', this.init);
+
+        // Load common sound sprites for consistent audio experience
         soundManager.loadSound('commonSounds', 'sounds/commonSounds.mp3', {
             sprite: {
                 "backToMainScreen": [
@@ -47,29 +100,71 @@ class App {
         });
     }
 
+    /**
+     * Ensures the specified CSS file is loaded and applied to the document.
+     * 
+     * @async
+     * @param {string} cssPath - Path to the CSS file to load
+     * @returns {Promise<void>}
+     */
     async ensureCSS(cssPath) {
-        if (this.loadedCSS.has(cssPath)) {
-            console.log(`CSS already loaded: ${cssPath}`);
-            return;
+        try {
+            // Normalize cssPath to remove leading/trailing slashes and whitespaces
+            const normalizedPath = cssPath.trim().replace(/^\/|\/$/g, '');
+
+            // Check if the CSS is already loaded
+            if (this.loadedCSS.has(normalizedPath)) {
+                console.log(`CSS already loaded: ${normalizedPath}`);
+                return;
+            }
+
+            // Create a new link element
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = normalizedPath;
+
+            // Use a promise to handle loading
+            await new Promise((resolve, reject) => {
+                link.onload = () => {
+                    this.loadedCSS.add(normalizedPath);
+                    resolve();
+                };
+                link.onerror = () => {
+                    reject(new GameError(
+                        `Failed to load CSS: ${normalizedPath}`,
+                        ErrorTypes.RESOURCE,
+                        { cssPath: normalizedPath }
+                    ));
+                };
+
+                // Append to head, avoiding duplicates
+                const existingLink = Array.from(document.head.getElementsByTagName('link'))
+                    .find(l => l.href.includes(normalizedPath));
+
+                if (!existingLink) {
+                    document.head.appendChild(link);
+                } else {
+                    console.warn(`Duplicate CSS detected: ${normalizedPath}`);
+                    resolve();
+                }
+            });
+        } catch (error) {
+            handleError(
+                error instanceof GameError ? error : new GameError(
+                    'CSS loading failed',
+                    ErrorTypes.ASSET_LOADING,
+                    { cssPath, originalError: error.message }
+                ),
+                'App.ensureCSS'
+            );
         }
-
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = cssPath;
-
-        return new Promise((resolve, reject) => {
-            link.onload = () => {
-                this.loadedCSS.add(cssPath);
-                console.log(`CSS loaded successfully: ${cssPath}`);
-                resolve();
-            };
-            link.onerror = () => {
-                reject(new Error(`Failed to load CSS: ${cssPath}`));
-            };
-            document.head.appendChild(link);
-        });
     }
 
+    /**
+     * Removes the specified CSS file from the loaded CSS set.
+     * 
+     * @param {string} cssPath - Path to the CSS file to unload
+     */
     untrackCSS(cssPath) {
         if (this.loadedCSS.has(cssPath)) {
             this.loadedCSS.delete(cssPath);
@@ -77,6 +172,11 @@ class App {
         }
     }
 
+    /**
+     * Generates the home screen HTML content based on available games.
+     * 
+     * @returns {string} Home screen HTML content
+     */
     generateHomeScreen() {
         console.log('Available games:', games);
         const floors = Object.keys(games)
@@ -94,6 +194,9 @@ class App {
         `;
     }
 
+    /**
+     * Sets up event listeners for floor buttons to navigate between screens.
+     */
     setupFloorListeners() {
         const gameIds = Object.keys(games);
         console.log('Setting up floor listeners for games:', gameIds);
@@ -107,6 +210,13 @@ class App {
         });
     }
 
+    /**
+     * Loads the specified screen or game module.
+     * 
+     * @async
+     * @param {string} screenId - ID of the screen or game module to load
+     * @returns {Promise<void>}
+     */
     async loadScreen(screenId) {
         console.log('Loading screen:', screenId);
 
@@ -204,6 +314,9 @@ class App {
         }
     }
 
+    /**
+     * Checks the current screen orientation and updates the body class accordingly.
+     */
     checkOrientation() {
         if (window.innerHeight > window.innerWidth) {
             document.body.classList.remove('landscape');
@@ -212,6 +325,11 @@ class App {
         }
     }
 
+    /**
+     * Initializes the application by loading the home screen and setting up event listeners.
+     * 
+     * @async
+     */
     async init() {
         try {
             // Initialize background music

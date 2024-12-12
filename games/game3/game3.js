@@ -1,3 +1,41 @@
+/**
+ * @fileOverview Memory Card Game Module for Kids Educational Game
+ * 
+ * This module implements an interactive memory card matching game
+ * where children find pairs of identical cards.
+ * 
+ * Game Mechanics:
+ * - Card grid generation
+ * - Card flipping interaction
+ * - Pair matching validation
+ * - Move and time tracking
+ * - Sound and visual feedback
+ * 
+ * Learning Objectives:
+ * - Memory enhancement
+ * - Concentration skills
+ * - Pattern recognition
+ * - Visual memory
+ * - Cognitive processing speed
+ * 
+ * Key Features:
+ * - Dynamic card grid
+ * - Randomized card placement
+ * - Progressive difficulty
+ * - Error handling
+ * - Responsive design
+ * 
+ * @module MemoryGame
+ * @requires ../../components/Game/Game.js
+ * @requires ../../components/popUp/popUp.js
+ * @requires ../../utils/errorHandler.js
+ * @requires ../../utils/soundManager.js
+ * 
+ * @author Martin Lubenov
+ * @version 1.0.0
+ * @license MIT
+ */
+
 import { Game } from '../../components/Game/Game.js';
 import { PopUpStates } from '../../components/popUp/popUp.js';
 import { handleError, GameError, ErrorTypes } from '../../utils/errorHandler.js';

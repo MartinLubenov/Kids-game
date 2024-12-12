@@ -1,3 +1,42 @@
+/**
+ * @fileOverview Light Sequence Game Module for Kids Educational Game
+ * 
+ * This module implements an interactive memory game where children
+ * must repeat a sequence of colored light patterns.
+ * 
+ * Game Mechanics:
+ * - Dynamic color sequence generation
+ * - Progressive difficulty
+ * - Player input validation
+ * - Sound and visual feedback
+ * - Level progression
+ * 
+ * Learning Objectives:
+ * - Short-term memory enhancement
+ * - Pattern recognition
+ * - Sequence tracking
+ * - Cognitive processing speed
+ * - Visual-auditory coordination
+ * 
+ * Key Features:
+ * - Randomized color sequences
+ * - Multi-level gameplay
+ * - Interactive color buttons
+ * - Sound cues for game events
+ * - Error handling
+ * - Responsive design
+ * 
+ * @module LightSequenceGame
+ * @requires ../../components/Game/Game.js
+ * @requires ../../components/popUp/popUp.js
+ * @requires ../../utils/errorHandler.js
+ * @requires ../../utils/soundManager.js
+ * 
+ * @author Martin Lubenov
+ * @version 1.0.0
+ * @license MIT
+ */
+
 import { Game } from '../../components/Game/Game.js';
 import { PopUpStates } from '../../components/popUp/popUp.js';
 // import { shuffleArray, getCurrentGameCssPath } from '../../utils/helpers.js';

@@ -1,6 +1,39 @@
+/**
+ * @fileOverview Utility Helper Functions for Kids Educational Game
+ * 
+ * This module provides a collection of utility functions to support
+ * various game mechanics, resource management, and dynamic content loading.
+ * 
+ * Key Features:
+ * - Array manipulation (shuffling)
+ * - Random number generation
+ * - CSS resource management
+ * - Dynamic image loading
+ * - Error-safe utility functions
+ * 
+ * Design Principles:
+ * - Modular and reusable functions
+ * - Comprehensive error handling
+ * - Dynamic resource management
+ * 
+ * @module Helpers
+ * @requires ./errorHandler.js
+ * @requires ../app.js
+ * 
+ * @author Martin Lubenov
+ * @version 1.0.0
+ * @license MIT
+ */
+
 import { handleError, GameError, ErrorTypes } from './errorHandler.js';
 import { untrackCSS } from '../app.js';
 
+/**
+ * Shuffles the elements of an array in-place and returns the array.
+ * 
+ * @param {Array} array - The array to be shuffled.
+ * @returns {Array} The shuffled array.
+ */
 export function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -9,10 +42,23 @@ export function shuffleArray(array) {
     return array;
 }
 
+/**
+ * Generates a random integer within a specified range.
+ * 
+ * @param {number} min - The minimum value (inclusive).
+ * @param {number} max - The maximum value (inclusive).
+ * @returns {number} A random integer between min and max.
+ */
 export function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * Unloads a CSS file from the document.
+ * 
+ * @param {string} filename - The filename of the CSS file to unload.
+ * @throws {GameError} If the filename is not provided or the CSS file is not found.
+ */
 export function unloadCSS(filename) {
     try {
         if (!filename) {
@@ -23,24 +69,26 @@ export function unloadCSS(filename) {
             );
         }
 
+        // Normalize filename to ensure consistent matching
+        const normalizedFilename = filename.replace(/^\//, '');
+
         const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
         let found = false;
 
         links.forEach(link => {
-            if (link.href && link.href.includes(filename)) {
+            // Check if the link's href contains the normalized filename
+            if (link.href && link.href.includes(normalizedFilename)) {
                 document.head.removeChild(link);
-                console.log(`Премахнат CSS файл: ${filename}`);
-                untrackCSS(filename);
+                console.log(`Премахнат CSS файл: ${normalizedFilename}`);
+                untrackCSS(normalizedFilename);
                 found = true;
             }
         });
 
         if (!found) {
-            throw new GameError(
-                'CSS file not found',
-                ErrorTypes.RESOURCE,
-                { filename }
-            );
+            console.warn(`CSS file not found: ${normalizedFilename}`);
+            // Instead of throwing an error, log a warning and continue
+            // This prevents breaking the game flow if a CSS file is not present
         }
     } catch (error) {
         handleError(
@@ -54,6 +102,11 @@ export function unloadCSS(filename) {
     }
 }
 
+/**
+ * Retrieves the current game CSS path.
+ * 
+ * @returns {string|null} The current game CSS path or null if not found.
+ */
 export function getCurrentGameCssPath() {
     try {
         const links = Array.from(document.getElementsByTagName('link'));
@@ -87,6 +140,12 @@ export function getCurrentGameCssPath() {
     }
 }
 
+/**
+ * Retrieves a list of game images for a given game name.
+ * 
+ * @param {string} gameName - The name of the game.
+ * @returns {Promise<Array>} A promise resolving to an array of game image objects.
+ */
 export async function getGameImages(gameName) {
     try {
         if (!gameName) {

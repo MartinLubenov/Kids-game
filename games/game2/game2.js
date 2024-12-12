@@ -1,3 +1,42 @@
+/**
+ * @fileOverview Puzzle Game Module for Kids Educational Game
+ * 
+ * This module implements an interactive puzzle game where children
+ * arrange puzzle pieces to complete an image.
+ * 
+ * Game Mechanics:
+ * - Drag and drop puzzle piece interaction
+ * - Multiple image categories
+ * - Dynamic puzzle generation
+ * - Piece placement validation
+ * - Sound and visual feedback
+ * 
+ * Learning Objectives:
+ * - Spatial reasoning
+ * - Fine motor skills
+ * - Problem-solving
+ * - Visual-spatial intelligence
+ * - Patience and concentration
+ * 
+ * Key Features:
+ * - Responsive drag and drop system
+ * - Multiple difficulty levels
+ * - Randomized puzzle generation
+ * - Error handling
+ * - Adaptive UI
+ * 
+ * @module PuzzleGame
+ * @requires ../../components/Game/Game.js
+ * @requires ../../components/popUp/popUp.js
+ * @requires ../../utils/helpers.js
+ * @requires ../../utils/errorHandler.js
+ * @requires ../../utils/soundManager.js
+ * 
+ * @author Martin Lubenov
+ * @version 1.0.0
+ * @license MIT
+ */
+
 import { Game } from '../../components/Game/Game.js';
 import { PopUpStates } from '../../components/popUp/popUp.js';
 import { shuffleArray, getCurrentGameCssPath } from '../../utils/helpers.js';
