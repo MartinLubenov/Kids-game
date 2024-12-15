@@ -1,10 +1,8 @@
-/* Основни стилове за контейнера и игралните екрани */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    /* overflow-y: hidden; */
 }
 
 .container {
@@ -20,7 +18,6 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    /* background-attachment: fixed; */
     background-color: #2ec6d7;
 }
 
@@ -33,30 +30,6 @@ body {
 .container.loaded {
     opacity: 1;
 }
-
-/* .game-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    width: 80%;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-}
-
-.game-screen h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.game-screen p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-} */
 
 button {
     padding: 10px 20px;
@@ -83,7 +56,6 @@ button:hover {
     }
 }
 
-/* Стилове за началния екран */
 .building {
     display: flex;
     flex-direction: column;
@@ -104,19 +76,12 @@ button:hover {
 .floor:hover {
     background-color: #00bfff;
     transform: scale(1.1);
-    /* Увеличаване при hover */
 }
-
-/* Стилове за етажите
-.floor:nth-child(odd) {
-    background-color: #add8e6;
-} */
 
 .floor:nth-child(even) {
     background-color: #afeeee;
 }
 
-/* Добавяне на анимации за екрана */
 .container,
 .game-screen {
     transition: opacity 0.5s ease-in-out;
@@ -128,7 +93,6 @@ button:hover {
     opacity: 1;
 }
 
-/* Плавен преход при сменяне на игри */
 .game-screen {
     opacity: 0;
     animation: fadeIn 0.5s forwards;
@@ -144,7 +108,6 @@ button:hover {
     }
 }
 
-/* Стилове за навигацията */
 button {
     padding: 10px 20px;
     background-color: #ff6347;
@@ -160,7 +123,6 @@ button:hover {
     background-color: #ff4500;
 }
 
-/* Респонсивен дизайн */
 @media screen and (max-width: 768px) {
     .floor {
         font-size: 1rem;
@@ -176,18 +138,3 @@ button:hover {
         font-size: 1rem;
     }
 }
-
-/* @media only screen and (orientation: landscape) {
-    body {
-        display: none !important;
-    }
-
-    .landscape-message {
-        display: block;
-        text-align: center;
-        font-size: 2rem;
-        padding: 20px;
-        background-color: #f00;
-        color: #fff;
-    }
-} */

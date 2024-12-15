@@ -1,36 +1,21 @@
-/* game1/game.css */
-
-/* Премахваме вертикалния скрол на цялата страница */
 html,
 body {
     overflow: hidden;
-    /* Скриваме вертикалния скрол */
     margin: 0;
-    /* Премахваме външния margin, който може да причинява скрол */
     padding: 0;
-    /* Премахваме padding, който може да разширява съдържанието */
     height: 100%;
-    /* Уверяваме се, че body заема цялата височина */
     width: 100%;
-    /* Уверяваме се, че body заема цялата ширина */
 }
 
-/* Основен стил за body */
 body {
     display: flex;
-    /* Използваме flexbox */
     justify-content: center;
-    /* Центрираме съдържанието по хоризонтала */
     align-items: center;
-    /* Центрираме съдържанието по вертикала */
     min-height: 100vh;
-    /* Пълна височина на екрана */
     background-color: #f0f8ff;
-    /* Можете да добавите фон, ако искате */
     font-family: 'Comic Sans MS', cursive;
 }
 
-/* Основен стил за екрана на играта */
 .game-screen {
     display: flex;
     flex-direction: column;
@@ -45,10 +30,9 @@ body {
     padding: 20px;
     overflow: hidden;
     position: relative;
-    color: #007bff; /* Updated to target object color */
+    color: #007bff; 
 }
 
-/* Анимация за фона */
 @keyframes gradientBG {
     0% {
         background-position: 0% 50%;
@@ -61,7 +45,6 @@ body {
     }
 }
 
-/* Добавяме декоративни елементи за по-детски вид */
 .game-screen::before,
 .game-screen::after {
     content: '';
@@ -95,7 +78,6 @@ body {
     }
 }
 
-/* Заглавие на играта */
 .game-screen h1 {
     font-size: 2.5rem;
     color: white;
@@ -112,7 +94,6 @@ body {
     display: inline-block;
 }
 
-/* Подобряване на четливостта на допълнителни елементи */
 .game-screen p,
 .game-screen span,
 .game-screen div {
@@ -120,7 +101,6 @@ body {
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
 }
 
-/* Game screen container */
 .game-screen {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -142,66 +122,22 @@ body.game1-loaded .game-screen {
     visibility: visible;
 }
 
-/* Стил за съдържанието на поп-ъп */
-/* .popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-    box-sizing: border-box;
-} */
-
-/* Стил за съобщението в pop-up */
-/* #popup-message {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #4CAF50;
-    margin-bottom: 20px;
-} */
-
-/* Стил за бутона за затваряне на pop-up */
-/* #popup-close {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-} */
-
-/* #popup-close:hover {
-    background-color: #0056b3;
-} */
-
-/* Стилове за играта */
 .game-screen {
     background-color: #f0f8ff;
-    /* Светлосин фон */
     padding: 2%;
-    /* Премахваме голямото padding */
     border-radius: 8px;
     text-align: center;
     width: 100%;
-    /* max-width: 100%; */
-    /* Ограничаваме ширината на екрана */
     box-sizing: border-box;
-    /* Това ще включва padding и border в размера */
     height: 100%;
-    /* max-height: 90%; */
-    /* Ограничаваме височината, за да не излиза извън екрана */
 }
 
-/* Стилове за подсказката и оставащите опити */
 .hint {
     margin: 5% 0;
     font-size: 1.5rem;
     font-weight: bold;
     color: #ff5733;
     font-family: 'Comic Sans MS', sans-serif;
-    /* За детски вид */
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -209,11 +145,9 @@ body.game1-loaded .game-screen {
     font-size: 1.8rem;
     color: #ff5733;
     font-family: 'Comic Sans MS', sans-serif;
-    /* За детски вид */
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Стилове за обектите (картинки) */
 .objects-container {
     display: flex;
     flex-wrap: wrap;
@@ -234,9 +168,7 @@ body.game1-loaded .game-screen {
 
 .object img {
     width: 80px;
-    /* Размер на изображенията */
     height: 80px;
-    /* Размер на изображенията */
     object-fit: contain;
 }
 
@@ -246,17 +178,14 @@ body.game1-loaded .game-screen {
 
 .found {
     background-color: #28a745;
-    /* Зелен цвят за намерен обект */
     color: white;
 }
 
 .not-found {
     background-color: #dc3545;
-    /* Червен цвят за неправилно избран обект */
     color: white;
 }
 
-/* Стилове за бутона "Назад" */
 button {
     background-color: #007bff;
     padding: 10px 20px;
@@ -272,15 +201,12 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Стилове за подсказката за търсене на обект */
 #target-object {
     font-size: 2rem;
     font-weight: bold;
     color: #007bff;
-    /* Зелен за целта */
 }
 
-/* За "изчезващия" екран */
 .fade-out {
     opacity: 0;
     transition: opacity 1s ease-in-out;

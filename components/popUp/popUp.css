@@ -1,4 +1,3 @@
-/* Основен контейнер за попъпа */
 .popup {
     position: absolute;
     top: 0;
@@ -19,19 +18,20 @@
         opacity: 0;
         transform: scale(0.5);
     }
+
     70% {
         opacity: 0.9;
         transform: scale(1.1);
     }
+
     100% {
         opacity: 1;
         transform: scale(1);
     }
 }
 
-/* Съдържанието на попъпа */
 .popup-content {
-    background-color: #7399ff; /* Bright gold background */
+    background-color: #7399ff;
     padding: 30px;
     border-radius: 25px;
     text-align: center;
@@ -44,7 +44,6 @@
     overflow: hidden;
 }
 
-/* Decorative elements */
 .popup-content::before {
     content: '🌟';
     position: absolute;
@@ -65,7 +64,6 @@
     transform: rotate(15deg);
 }
 
-/* Съобщението в попъпа */
 #popup-message {
     font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     font-size: 1.8rem;
@@ -75,7 +73,6 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Бутона за затваряне */
 #popup-close {
     padding: 12px 25px;
     font-size: 1.2rem;
@@ -97,12 +94,8 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Показване на попъпа */
 .popup.show {
     display: flex;
-    /* Използваме flexbox за вертикално и хоризонтално центриране */
     justify-content: center;
-    /* Центриране по хоризонтала */
     align-items: center;
-    /* Центриране по вертикала */
 }
