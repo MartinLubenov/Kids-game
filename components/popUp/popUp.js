@@ -20,7 +20,7 @@ export class PopUp {
         this.cssLink = null;
 
         // Load common sounds
-        soundManager.loadSound('popUpSounds', 'sounds/popUpSounds.mp3', {
+        soundManager.loadSound('popUpSounds', 'components/popUp/sounds/popUpSounds.mp3', {
             sprite: {
                 "closePopUp": [
                     0,
